@@ -23,7 +23,7 @@ if (age > ms('5 days')) {
   get('https://github.com/aheckmann/greadme', function(e, body){
     if (e) throw e
     var r = /href=["']([^"']+\.css)/g
-    var batch = new Batch
+    var batch = new Batch()
     var m
     while (m = r.exec(body)) add(m[1])
     function add(url){
