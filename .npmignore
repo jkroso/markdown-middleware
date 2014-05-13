@@ -1,5 +1,5 @@
 coverage
 build.sh
 .tmp
-css
 etc
+gulpfile.js

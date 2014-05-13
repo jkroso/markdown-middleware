@@ -17,7 +17,7 @@ gulp.task("test:istanbul", etc.istanbul(SPEC));
 gulp.task("test", ["test:istanbul"]);
 
 if (process.argv.slice(-1)[0] === 'watch') {
-  gulp.task("server", ["test"], etc.server());
+  gulp.task("server", ["test"], etc.server({port: 4001}));
 }
 
 gulp.task("watch", ["server"], function(done){

@@ -8,7 +8,7 @@ var shell = require("./shell")
 ;
 module.exports = function mocha (filename){
   return function(){
-    var cmd = './node_modules/mocha/bin/mocha ' +filename+ ' -R spec -t 1000;'
+    var cmd = './node_modules/mocha/bin/mocha ' +filename+ ' -R spec -t 30000;'
     ;
     shell(cmd)
       .catch(function(err){throw err})

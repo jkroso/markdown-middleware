@@ -21,41 +21,54 @@ conn.livereload = require('connect-livereload')
   * @description 
   * It creates a express/livereload servers and server the `./coverage/index.html`, and `./*.md` diles
  */
-module.exports = function server () {
+module.exports = function server (opts) {
   var app = express()
   , lrUp = new Deferred()
   , glob = "./coverage/index.html"
   , serverLR
+  , PORT
+  , PORT_LR
   ;
 
+  opts = opts || {port: 4001}
+  PORT = opts.port
+  PORT_LR = PORT + 1
+  
   serverLR = tinylr({
     liveCSS: false,
     liveJs: false,
     LiveImg: false
   });
 
-  serverLR.listen(35729, function(err) {
+  serverLR.listen(PORT_LR, function(err) {
     if (err) { return lrUp.reject(err) }
     lrUp.resolve();
   });
 
   app.use(conn.errorHandler({dumpExceptions: true, showStack: true}));
-  app.use(conn.livereload());
+  app.use(conn.livereload({port: PORT_LR}));
   app.use('/coverage', express["static"](path.resolve('./coverage')));
 
-  app.listen(3001, function() {
-    log(bold("express server running on port: " + magenta(3001)));
+  app.listen(PORT, function() {
+    log(bold("express server running on port: " + magenta(PORT)));
   });
 
- 
-
   return function() {
+    var firstLoad = true;
     gulp.watch(glob, function(evt) {
       lrUp.then(function() {
-        log('LR: reloading....');
         gulp.src(evt.path).pipe(livereload(serverLR));
+        if (firstLoad){
+          // sleeping, to give time to tiny-lr to do its stuff
+          shell('sleep 1 && touch ./coverage/index.html')
+          firstLoad = false;
+          return
+        }
+        log('LR: reloading....');
       });
     });
   };
-};
 
+
+
+};
