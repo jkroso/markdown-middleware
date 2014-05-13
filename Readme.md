@@ -33,8 +33,29 @@ app.use(markdown({
 }))
 ```
 
-## Running the tests
+#### For those contributing
+before anything, just install the dependecies ...
 
 ```bash
-$ make test
+$ npm install
+```
+
+#### Running the mocha tests
+
+```bash
+$ ./node_module/.bin/gulp test:mocha
+```
+
+#### Running the istanbul coverage
+
+```bash
+$ ./node_module/.bin/gulp test:istanbul
+```
+
+#### auto reloading watching
+point your browser to `localhost:3001/coverage` for auto-reloaded coverage page :)
+
+```bash
+$ npm install
+$ ./node_module/.bin/gulp watch
 ```
